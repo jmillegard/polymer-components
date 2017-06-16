@@ -1,0 +1,8 @@
+{
+  "name": "polymer-2-carousel",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#2",
+    "boston": "^2.0.6"
+  }
+}

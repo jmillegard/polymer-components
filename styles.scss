@@ -1,0 +1,18 @@
+$global-shadow: rgba(0,0,0,0.10);
+$global-border-color: #e8e8e8;
+$container-xs: 480px !default;
+$container-sm: 640px !default;
+$container-md: 940px !default;
+$container-lg: 1160px !default;
+$font-size-base: 1.5rem;
+$font-family-base: "Roboto", Helvetica, Arial, sans-serif;
+$color-marine: #3E4362;
+$font-weight-bold: 500;
+
+$h1: 250%;
+$h2: 180%;
+$h3: 150%;
+$h4: 120%;
+$h5: 100%;
+
+@import "./bower_components/boston/app";

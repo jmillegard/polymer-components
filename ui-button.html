@@ -1,0 +1,201 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
+
+<dom-module id="ui-button">
+  
+  <template class="testar">
+    
+    <style lang="scss">
+    
+      @import "./styles";
+    
+      $ui-button-border-style: solid !default;
+      $ui-button-border-width: 1px !default;
+      $ui-button-border-color: transparent !default;
+
+      $ui-button-line-height: $line-height-base !default;
+
+      $ui-button-radius: $global-radius !default;
+
+      $ui-button-padding-default: $inline-size-sm !default;
+      $ui-button-padding-small: $inline-size-xs !default;
+      $ui-button-padding-large: $inline-size-lg !default;
+
+      $ui-button-font-size-small: $font-size-xs !default;
+      $ui-button-font-size-large: $font-size-lg !default;
+
+      .ui-button {
+        display: inline-flex;
+        border-style: $ui-button-border-style;
+        border-width: $ui-button-border-width;
+        border-color: $ui-button-border-color;
+        padding: $ui-button-padding-default;
+        line-height: $ui-button-line-height;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+
+        &:active {
+          top: 1px;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        @each $name, $style in $styles {
+          &.#{$name} {
+            background: palette($name);
+            color: palette($name, textcolor);
+            &.selected {
+              background: palette($name, light);
+              box-shadow: inset 0 0 8px 0 rgba($color-black,0.4);
+            }
+          }
+        }
+
+        &.radius {
+          border-radius: $ui-button-radius;
+        }
+
+        &.rounded {
+          border-radius: $global-rounded;
+        }
+
+        &.small {
+          padding: $ui-button-padding-small;
+          font-size: $ui-button-font-size-small;
+        }
+
+        &.large {
+          padding: $ui-button-padding-large;
+          font-size: $ui-button-font-size-large;
+        }
+
+        &:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        &.loading {
+          .button-title {
+            opacity: 0;
+          }
+        }
+
+        .loading-animation {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          margin: 0;
+          padding: 0 4px;
+          box-sizing: border-box;
+          list-style: none;
+
+          li {
+            display: inline-block;
+            float: none;
+            vertical-align: baseline;
+            width: 7px;
+            height: 7px;
+            padding: 0;
+            border: none;
+            margin: 0 5px 0 0;
+            opacity: 0.4;
+            border-radius: $global-rounded;
+            box-shadow: 1px 1px rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.5);
+            transition: background 0.2s;
+            animation: button-loading 1s infinite;
+
+            &:nth-child(3n+2) {
+              animation-delay: 0.15s;
+            }
+
+            &:nth-child(3n+3) {
+              animation-delay: 0.3s;
+            }
+            &:last-child {
+              margin: 0;
+            }
+          }
+        }
+
+        @keyframes button-loading {
+          0%   { opacity: 0.4; }
+          20%  { opacity: 0.4; }
+          50% { opacity: 1.0; }
+          100% { opacity: 0.4; }
+        }
+      }
+
+    </style>
+
+    <button class$="ui-button {{size}} {{type}} {{loadClass}} {{appearance}}">
+      
+      <template is="dom-if" if="{{prependicon}}">
+        <i class="nr1" data-ico="{{icon}} autosize"></i>
+      </template>
+      
+      <div class="button-title">
+        <slot></slot>
+        {{title}}
+      </div>
+      
+      <template is="dom-if" if="{{appendicon}}">
+        <i class="nl1" data-ico="{{icon}} autosize"></i>
+      </template>
+      
+      <template is="dom-if" if="{{loading}}">
+        <ul class="loading-animation">
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </template>
+      
+    </button>
+
+  </template>
+
+  <script>
+
+    class UIButton extends Polymer.Element {
+      
+      static get is() { return 'ui-button' }
+      
+      static get properties() {
+        return {
+          type: String,
+          size: String,
+          appearance: String,
+          title: String,
+          loading: Boolean,
+          prependicon: Boolean,
+          appendicon: Boolean,
+          icon: String,
+          loadClass: {
+            type: String,
+            computed: 'setLoadingClass(loading)'
+          },
+          appearance: {
+            type: String,
+            value: 'radius'
+          }
+        };
+      }
+      
+      setLoadingClass(loading) {
+        return loading ? 'loading' : '';
+      }
+      
+    }
+
+    customElements.define(UIButton.is, UIButton);
+
+  </script>
+  
+</dom-module>
